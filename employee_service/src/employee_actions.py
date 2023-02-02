@@ -28,3 +28,45 @@ class EmpAction:
         except Exception as e:
             print(e)
         return {}
+
+    def add_to_dept(self,empid,deptName):
+        try:
+            item = self.emp_repo.add_to_dept(empid,deptName)
+            return {"status":"update successfull"}
+        except Exception as e:
+            print(e)
+        return {}
+
+    def get_all_depts(self):
+        try:
+            items = self.emp_repo.get_all_depts()
+            return {"status":"update successfull"}
+        except Exception as e:
+            print(e)
+        return {}
+
+    def update_status(self,id,status):
+        try:
+            item = self.emp_repo.update_status(id,status)
+            return item
+        except Exception as e:
+            print(e)
+        return {}
+
+    def check_department(self,dept):
+        try:
+            print(dept)
+            items = self.emp_repo.check_department(dept)
+            res = []
+            for item in items:
+                res.append({
+                    'empid': item[0],
+                    'name': item[1],
+                    'age': item[2],
+                    'gender': item[3],
+                    'status': item[4]
+                })
+            return res
+        except Exception as e:
+            print(e)
+        return {}

@@ -6,17 +6,17 @@ with open('employee_service/DB/schema.sql') as f:
 
 cursor = connection.cursor()
 
-cursor.execute ("INSERT INTO department (deptName) VALUES (?)",
-("HR",)
+cursor.execute ("INSERT INTO department (deptName,deptId) VALUES (?,?)",
+("HR",1)
 )
-cursor.execute ("INSERT INTO department (deptName) VALUES (?)",
-("DEVELOPEMENT",)
+cursor.execute ("INSERT INTO department (deptName,deptId) VALUES (?,?)",
+("DEVELOPEMENT",2)
 )
-cursor.execute ("INSERT INTO department (deptName) VALUES (?)",
-("FINANCE",)
+cursor.execute ("INSERT INTO department (deptName,deptId) VALUES (?,?)",
+("FINANCE",3)
 )
-cursor.execute ("INSERT INTO department (deptName) VALUES (?)",
-("MARKETING",)
+cursor.execute ("INSERT INTO department (deptName,deptId) VALUES (?,?)",
+("MARKETING",4)
 )
 
 connection.commit()
