@@ -4,8 +4,8 @@ CREATE TABLE "employee"(
     "name" TEXT NOT NULL,
     "age" NUMBER NOT NULL,
     "gender" TEXT NOT NULL,
-    "status" BOOLEAN NOT NULL
-    "deptid" INTEGER
+    "status" BOOLEAN NOT NULL,
+    "deptid" INTEGER,
     CONSTRAINT fk_departments
     FOREIGN KEY (deptid)
     REFERENCES department(deptId)
