@@ -16,12 +16,36 @@ def add_data():
     if added_employee =={}:
         return Response("{'error': 'Erro addding the item'}", mimetype='application/json', status=500)
     return Response(json.dumps(added_employee), mimetype='application/json', status=201)
-    return {"hello": "world"}
 
 
 @app.route('/allemployees', methods = ['GET'])
 def get_all_items():
         employees = emp_action.get_all_employees()
+        return Response(json.dumps(employees), mimetype='application/json', status=200)
+
+@app.route('/getemployee/<empid>',methods=['GET'])
+def get_employee(empid):
+    emp_data=emp_action.get_employee_by_id(empid)
+    if emp_data == {}:
+                return Response("{'error': 'Erro addding the item'}", mimetype='application/json', status=500)
+    return Response(json.dumps(emp_data), mimetype='application/json', status=200)
+
+@app.route('/updatedetails/<empid>', methods=['POST'])
+def update_data(empid):
+    request_data = request.get_json()
+    name  = request_data['name']
+    age   = request_data['age']
+    gender = request_data['gender']
+    update_emp_res=emp_action.update_emp(empid, name, age, gender)
+    if update_emp_res=={}:
+        return Response("{'error': 'Erro addding the item'}", mimetype='application/json', status=500)
+    return Response(json.dumps(update_emp_res), mimetype='application/json', status=200)
+
+@app.route('/workingemployees', methods = ['GET'])
+def get_all_working():
+        employees = emp_action.get_all_workingemployees()
+        if len(employees) == 0:
+            return Response("{'status': 'no data found'}", mimetype='application/json', status=200)
         return Response(json.dumps(employees), mimetype='application/json', status=200)
     
 if __name__ == '__main__':
