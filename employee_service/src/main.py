@@ -72,6 +72,8 @@ def update_data(empid):
         return Response("{'error': 'Erro addding the item'}", mimetype='application/json', status=500)
     return Response(json.dumps(update_emp_res), mimetype='application/json', status=200)
 
+
+
 @app.route('/workingemployees', methods = ['GET'])
 def get_all_working():
         employees = emp_action.get_all_workingemployees()

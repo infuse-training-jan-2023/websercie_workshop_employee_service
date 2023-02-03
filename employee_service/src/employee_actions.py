@@ -30,6 +30,8 @@ class EmpAction:
         except Exception as e:
             print(e)
         return {}
+
+
     def get_employee_by_id(self,id):
         try:
             item = self.emp_repo.get_employee(id)
@@ -46,6 +48,8 @@ class EmpAction:
         except Exception as e:
             print(e)
             return {}
+
+            
         
     def update_emp(self,empid, name, age, gender):
             try:

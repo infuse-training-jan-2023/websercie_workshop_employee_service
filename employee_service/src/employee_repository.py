@@ -6,6 +6,8 @@ class EmpRepository:
     def connect_db():
         return sqlite3.connect(EmpRepository.DBPATH)
     
+
+
     @staticmethod
     def add_employee(name,age,gender,status):
         try:
@@ -21,6 +23,8 @@ class EmpRepository:
             }
         except Exception as e:
             raise Exception('Error: ', e)
+
+
 
     @staticmethod
     def get_all_employees():
@@ -41,6 +45,8 @@ class EmpRepository:
             return row
         except Exception as e:
             raise Exception('Error: ', e)
+
+
 
     @staticmethod
     def update_emp_details(empid, name, age, gender):
