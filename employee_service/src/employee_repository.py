@@ -1,20 +1,20 @@
 import sqlite3
 
 class EmpRepository:
-    DBPATH = './employee_services.db'
-    @staticmethod
-    def connect_db():
-        return sqlite3.connect(EmpRepository.DBPATH)
-    
+    def __init__(self) -> None:   
+        self.db_path = '../employee_services.db'
+        self.connection = None
+        
+    def connect_db(self):
+        if self.connection is None:
+            self.connection =  sqlite3.connect(self.db_path, check_same_thread=False)    
 
-
-    @staticmethod
-    def add_employee(name,age,gender,status):
+    def add_employee(self,name,age,gender,status):
         try:
-            conn = EmpRepository.connect_db()
-            c = conn.cursor()
-            insert_cursor = c.execute('insert into employee (name,age,gender,status) values(?,?,?,?)', (name,age,gender,status))
-            conn.commit()
+            self.connect_db()
+            cursor = self.connection.cursor()
+            cursor.execute('insert into employee (name,age,gender,status) values(?,?,?,?)', (name,age,gender,status))
+            self.connection.commit()
             return {
                 'name': name,
                 'age': age,
@@ -24,77 +24,65 @@ class EmpRepository:
         except Exception as e:
             raise Exception('Error: ', e)
 
-
-
-    @staticmethod
-    def get_all_employees():
+    def get_all_employees(self):
         try:
-            conn = EmpRepository.connect_db()
-            c = conn.cursor()
-            rows = c.execute('select * from employee')
+            self.connect_db()
+            cursor = self.connection.cursor()
+            rows = cursor.execute('select * from employee')
             return rows
         except Exception as e:
             raise Exception('Error: ', e)
-    @staticmethod
-    def get_employee(empid):
+
+    def get_employee(self,emp_id):
         try:
-            conn = EmpRepository.connect_db()
-            c = conn.cursor()
-            row=c.execute('select * from employee where empId=?',(empid,))
-            conn.commit()
+            self.connect_db()
+            cursor = self.connection.cursor()
+            cursor.execute('select * from employee where emp_id=?',(emp_id,))
+            row = cursor.fetchall()
+            self.connection.commit()
             return row
         except Exception as e:
             raise Exception('Error: ', e)
 
-
-
-    @staticmethod
-    def update_emp_details(empid, name, age, gender):
+    def update_emp_details(self,emp_id,update_item):
         try:
-            conn = EmpRepository.connect_db()
-            c = conn.cursor()
-            if name is not None:
-                sqlupdate='update  employee set name=? where empId=?'
-                result=c.execute(sqlupdate, (name,empid,))
-            if  age is not None:
-                result=c.execute('update  employee set age=? where empId=?', (age,empid,))
-            if  gender is not None:
-                result=c.execute('update  employee set gender=? where empId=?', (gender,empid,))
-            conn.commit()
+            self.connect_db()
+            cursor = self.connection.cursor()
+            for key in update_item.keys():
+                result = cursor.execute(f'update  employee set {key}=? where emp_id=?', (update_item[key],emp_id,))
+            self.connection.commit()     
             if(result.rowcount >0):     
                 return {'status': "details updated successfully"}
             return {'status': "details not updated "}
         except Exception as e:
             raise Exception('Error: ', e)
         
-    @staticmethod
-    def get_all_workingemployees():
+    def get_all_workingemployees(self):
         try:
-            conn = EmpRepository.connect_db()
-            c = conn.cursor()
-            rows = c.execute('select * from employee where status=1')
+            self.connect_db()
+            cursor = self.connection.cursor()
+            cursor.execute('select * from employee where status = 1')
+            rows = cursor.fetchall()
             return rows
         except Exception as e:
             raise Exception('Error: ', e)    
-    @staticmethod
-    def add_to_dept(empid,deptName):
-        print(empid,deptName)
+
+
+    def add_to_dept(self,emp_id,deptName):
         try:
-            conn = EmpRepository.connect_db()
-            c = conn.cursor()
-            c.execute('UPDATE employee SET deptName =? WHERE empId = ?;',(deptName,empid))
-            c.fetchall()
-            conn.commit()
+            self.connect_db()
+            cursor = self.connection.cursor()
+            cursor.execute('UPDATE employee SET dept_name =? WHERE emp_id = ?;',(deptName,emp_id))
+            self.connection.commit()
         except Exception as e:
             raise Exception('Error: ', e)
 
-    @staticmethod
-    def update_status(id,status):
+    def update_status(self,id,status):
         try:
-            conn = EmpRepository.connect_db()
-            c = conn.cursor()
-            insert_cursor = c.execute('UPDATE employee SET status = ? WHERE empid = ?', (status,id))
-            conn.commit()
+            self.connect_db()
+            cursor = self.connection.cursor()
+            cursor.execute('UPDATE employee SET status = ? WHERE emp_id = ?', (status,id))
+            self.connection.commit()
             return {
                 'id': id,
                 'status': status
@@ -102,15 +90,13 @@ class EmpRepository:
         except Exception as e:
             raise Exception('Error: ', e)
 
-    @staticmethod
-    def check_department(dept):
-            print(dept)
+    def check_department(self,dept):
             try:
-                conn = EmpRepository.connect_db()
-                c = conn.cursor()
-                insert_cursor = c.execute('SELECT * FROM employee WHERE deptName IN (SELECT deptName FROM department WHERE deptName= ? )', (dept,))
-                conn.commit()
-                return insert_cursor
+                self.connect_db()
+                cursor = self.connection.cursor()
+                row = cursor.execute('SELECT * FROM employee WHERE dept_name IN (SELECT dept_name FROM department WHERE dept_name= ? )', (dept,))
+                self.connection.commit()
+                return row
             except Exception as e:
                 raise Exception('Error: ', e)
     
