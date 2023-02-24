@@ -1,5 +1,4 @@
 from employee_repository import EmpRepository
-
 import json
 
 class EmpAction:
@@ -30,7 +29,8 @@ class EmpAction:
         except Exception as e:
             print(e)
         return {}
-    def get_employee_by_id(self,id):
+
+    def get_employee(self,id):
         try:
             item = self.emp_repo.get_employee(id)
             res = []
@@ -46,16 +46,16 @@ class EmpAction:
         except Exception as e:
             print(e)
             return {}
-        
-    def update_emp(self,empid, name, age, gender):
+       
+    def update_emp(self,empid,update_details):
             try:
-                update_item = self.emp_repo.update_emp_details(empid, name, age, gender)
+                update_item = self.emp_repo.update_emp_details(empid, update_details)
                 return update_item
             except Exception as e:
                 print(e)
             return {}
         
-    def get_all_workingemployees(self):
+    def get_all_working_employees(self):
         try:
             items = self.emp_repo.get_all_workingemployees()
             res = []
@@ -72,8 +72,6 @@ class EmpAction:
             print(e)
         return {}        
         
-            
-
     def add_to_dept(self,empid,deptName):
         try:
             item = self.emp_repo.add_to_dept(empid,deptName)
